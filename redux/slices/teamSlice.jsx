@@ -34,6 +34,11 @@ const teamSlice = createSlice({
     name: "teamsList",
     initialState,
     reducers: {
+        fetchExistingTeamsList: (state) => {
+            signInUserName = getSignInUsername();
+            let fetchedState = getInitialTeamsState();
+            state.teamsList = fetchedState.teamsList;
+        },
         createTeam: (state, { payload }) => {
             const { name, region, country } = payload;
             const validTeam = state.teamsList.find(team => team.name === payload.name);
@@ -43,9 +48,9 @@ const teamSlice = createSlice({
                 messageAlert("error", "Please fill all informations!");
             } else {
                 let id;
-                if(state.teamsList.length < 1){
+                if (state.teamsList.length < 1) {
                     id = 1;
-                }else {
+                } else {
                     id = state.teamsList[state.teamsList.length - 1].id + 1;
                 }
                 const addTeam = {
@@ -110,7 +115,7 @@ const teamSlice = createSlice({
                 return;
             }
 
-            existingTeam.playersList.push({id: playerId, name: playerName});
+            existingTeam.playersList.push({ id: playerId, name: playerName });
             existingTeam.playerCount++;
 
             messageAlert("success", "Joined Successfully!");
@@ -141,10 +146,10 @@ const teamSlice = createSlice({
 })
 
 export const deleteTeam = (teamId, playersList) => (dispatch) => {
-  dispatch(removeTeam({teamId}));
-  dispatch(removeCurrentTeamByList({playersList}));
-  messageAlert("success", "Team removed successfully!");
+    dispatch(removeTeam({ teamId }));
+    dispatch(removeCurrentTeamByList({ playersList }));
+    messageAlert("success", "Team removed successfully!");
 };
 
-export const { createTeam, updateTeamBasicInfo, removeTeam, addPlayerToTeam, removePlayerFromTeam, saveTeamsList } = teamSlice.actions;
+export const { fetchExistingTeamsList, createTeam, updateTeamBasicInfo, removeTeam, addPlayerToTeam, removePlayerFromTeam, saveTeamsList } = teamSlice.actions;
 export default teamSlice.reducer;

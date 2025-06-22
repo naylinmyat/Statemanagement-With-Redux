@@ -36,6 +36,12 @@ const playerSlice = createSlice({
     name: "playersList",
     initialState,
     reducers: {
+        fetchExistingPlayersList: (state) => {
+            signInUserName = getSignInUsername();
+            let fetchedState = getInitialPlayersState();
+            state.playersList = fetchedState.playersList;
+            state.nextCursorForPlayersList = fetchedState.nextCursorForPlayersList;
+        },
         fetchPlayersList: (state, { payload }) => {
             const playersData = payload.playersData.map(player => ({
                 ...player,
@@ -95,5 +101,5 @@ export const playerLeaveFromTeam = (playerId, teamId) => (dispatch) => {
     dispatch(removePlayerFromTeam({ playerId, teamId }));
 };
 
-export const { fetchPlayersList, saveNextCursorForPlayersList, savePlayersList, addToTeam, removeCurrentTeam, removeCurrentTeamByList } = playerSlice.actions;
+export const { fetchExistingPlayersList, fetchPlayersList, saveNextCursorForPlayersList, savePlayersList, addToTeam, removeCurrentTeam, removeCurrentTeamByList } = playerSlice.actions;
 export default playerSlice.reducer;
